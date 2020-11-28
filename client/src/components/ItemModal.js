@@ -5,7 +5,7 @@ import
 } from 'reactstrap';
 import { connect } from "react-redux";
 import { addItem } from "../store/actions";
-
+import PropTypes from 'prop-types'
 // NOTE: A container is actually a component using redux state
 function ItemModal(props)
 {
@@ -22,13 +22,17 @@ function ItemModal(props)
     return (
         <>
             <div>
-                <Button
-                    color='dark'
-                    style={ { marginBottom: '2rem' } }
-                    onClick={ toggle }
-                >
-                    Add Item
+                { props.AuthReducer.isAuthenticated ?
+                    <Button
+                        color='dark'
+                        style={ { marginBottom: '2rem' } }
+                        onClick={ toggle }
+                    >
+                        Add Item
                 </Button>
+                    :
+                    <h4 className='mb-3 ml-4'>Please log in to manage items</h4>
+                }
             </div>
             <Modal
                 isOpen={ modal }
@@ -62,4 +66,11 @@ function ItemModal(props)
         </>
     )
 }
-export default connect()(ItemModal)
+ItemModal.propTypes = {
+    AuthReducer: PropTypes.object.isRequired,
+
+}
+const mapStateToProps = state => ({
+    AuthReducer: state.AuthReducer
+})
+export default connect(mapStateToProps)(ItemModal)

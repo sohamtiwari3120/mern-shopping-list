@@ -1,22 +1,25 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const connectDB = require('./config/db')
 const cors = require('cors')
 const path = require('path')// CORE NodeJS module, no need to install
 
 require('dotenv').config()
 const items = require('./routes/api/items')
+const users = require('./routes/api/users')
+const auth = require('./routes/api/auth')
 
 const app = express()
 
 // Bodyparser Middleware
-app.use(bodyParser.json())
+app.use(express.json())
 
 // Connect to MongoDB
 connectDB();
 
 // Use Routes
 app.use('/api/items', items)
+app.use('/api/users', users)
+app.use('/api/auth', auth)
 
 // Serve static assets if we are in production
 if (process.env.NODE_ENV === 'production')

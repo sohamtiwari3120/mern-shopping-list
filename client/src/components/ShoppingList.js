@@ -46,14 +46,18 @@ function ShoppingList(props)
                             { props.ItemReducer.items.map(({ _id, name }) => (
                                 <CSSTransition key={ _id } timeout={ 500 } classNames='fade'>
                                     <ListGroupItem>
-                                        <Button
-                                            className='remove-btn'
-                                            color='danger'
-                                            size='small'
-                                            onClick={ onDeleteClick(_id) }
-                                        >
-                                            &times;
-                                    </Button>
+                                        {
+                                            props.AuthReducer.isAuthenticated &&
+                                            <Button
+                                                className='remove-btn'
+                                                color='danger'
+                                                size='small'
+                                                onClick={ onDeleteClick(_id) }
+                                            >
+                                                &times;
+                                            </Button>
+                                        }
+
                                         { name }
                                     </ListGroupItem>
                                 </CSSTransition>
@@ -66,9 +70,12 @@ function ShoppingList(props)
     )
 }
 ShoppingList.propTypes = {
-    items: PropTypes.object.isRequired
+    items: PropTypes.object.isRequired,
+    AuthReducer: PropTypes.object.isRequired,
+
 }
 const mapStateToProps = state => ({
-    ItemReducer: state.ItemReducer
+    ItemReducer: state.ItemReducer,
+    AuthReducer: state.AuthReducer
 })
 export default connect(mapStateToProps)(ShoppingList)
